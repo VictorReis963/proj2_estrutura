@@ -1,21 +1,85 @@
-// arquivo: src/apl2/Node.java
-
-// TODO: Colocar a identificação dos(as) integrantes aqui.
-
 package apl2;
-
-// -- A classe Node (que pertence ao pacote apl2) deve conter os atributos que
-// representam a nova versão dos dados de uma pessoa, conforme descrito no
-// enunciado da atividade Apl2.
-// -- A classe deve conter os construtores apropriados, assim como os métodos
-// getters e setters.
-// -- A classe também representa um nó que é usado na implementação da lista
-// duplamente encadeada (classe DLinkedList).
-// -- A classe deve sobrescrever (override) o método public String toString()
-// {...}, retornando uma string com os valores dos atributos da classe.
-
+//Representa um nó individual na nova lista duplamente encadeada
+//Tem os dados de um aluno e referências para o nó anterior e próximo
 public class Node {
+	private String id; //O novo ID do aluno
+	private String nome; //Nome do aluno
+	private float nota; //A nota do aluno com ele já no formato decimal
+	private Node next; //Referencia para o proximo nó na lista
+	private Node previous; //Referencia para o nó anterior na lista
+
+	//Começa com um nó com valores vazios/padrão
+	public Node() {
+		this.id = "";
+		this.nome = "";
+		this.nota = 99.9f;
+		this.next = null;
+		this.previous = null;
+	}
+
+	//Cria um nó com os dados do aluno
+	public Node(String id, String nome, float nota) {
+		this.id = id;
+		this.nome = nome;
+		this.nota = nota;
+		this.next = null;
+		this.previous = null;
+	}
+
+	//Retorna o Id do aluno
+	public String getId() {
+		return id;
+	}
+
+	//Define o Id do aluno
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	//Retorna o nome do aluno
+	public String getNome() {
+		return nome;
+	}
+
+	//Define o nome aluno
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	//Retorna a nota
+	public float getNota() {
+		return nota;
+	}
+
+	//Define a nota do aluno
+	public void setNota(float nota) {
+		this.nota = nota;
+	}
+
+	//Retorna a referencia para o proximo nó
+	public Node getNext() {
+		return next;
+	}
+
+	//Define a referencia para o próximo nó
+	public void setNext(Node next) {
+		this.next = next;
+	}
+
+	//Retorna a referencia para o nó anterior
+	public Node getPrevious() {
+		return previous;
+	}
+
+	//Define a referencia para o nó anterior
+	public void setPrevious(Node previous) {
+		this.previous = previous;
+	}
+
 	
-	// TODO: Implementar a classe conforme o enunciado da atividade Apl2.
-	
+	//Sobrescreve o metodo toString exibindo os dados do nó
+	@Override
+	public String toString() {
+		return "(" + id + "; " + nome + "; " + nota + ")";
+	}
 }

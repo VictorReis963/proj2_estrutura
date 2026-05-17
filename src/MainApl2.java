@@ -1,101 +1,97 @@
-//*************************** ATENÇÃO! ****************************
-// O método main() deve ser alterado somente nos comentários TODO.
-// Todas as outras instruções devem permanecer intactas e o código
-// deve funcionar conforme descrito no enunciado da atividade.
-//*************************** ATENÇÃO! ****************************
-// arquivo: src/MainApl2.java
-
-// TODO: Colocar a identificação dos(as) integrantes aqui.
-// TODO: Listar todas as referências consultadas para solucionar a atividade.
-
+import apl2.Data;
 import apl2.DLinkedList;
 import apl2.LinkedListOriginal;
-import apl2.Node;
 import apl2.Operation;
 
+import java.io.IOException;
+
+/*
+	Classe principal do projeto, Carrega os dados legados, os transforma, 
+	aplica filtros, calcula a media e salva o resultado no novo formato
+*/
 public class MainApl2 {
-	
 	public static void main(String[] args) {
 		LinkedListOriginal list = new LinkedListOriginal();
 
-		
-		// TODO: Carregar o conteúdo do arquivo "dados.txt" e adicionar cada linha como um nó na LinkedListOriginal list.
+		//Carregar e processar os dados do arquivo "dados.txt"
+		try {
+			//Lê todo o conteudo do arquivo texto
+			String fileContent = Data.loadTextFileToString("dados.txt");
+			String[] lines = fileContent.split("\\r?\\n|\\r"); //Divide o conteúdo em linhas e trata diferentes tipos de quebra de linha
+			//Itera sobre cada linha para extrair e adicionar os dados a lista original
+			for (String line : lines) {
+				String[] parts = line.split("#"); //Divide a linha
+				//Converte as partes para os tipos corretos e adiciona o nó á lista
+				int id = Integer.parseInt(parts[0]);
+				String nome = parts[1];
+				int inteiro = Integer.parseInt(parts[2]);
+				int decimo = Integer.parseInt(parts[3]);
+				list.append(id, nome, inteiro, decimo);
+			}
+		} catch (IOException e) { //Erro na leitura
+			System.err.println("Erro ao carregar arquivo dados.txt");
+			e.printStackTrace();
+			return;
+		}
 
-		
+		//Exibe os dados que foram carregados do sistema legado
 		System.out.println(">>>>>>>>>> Dados originais (sistema legado) >>>>>>>>>>");
 		System.out.println(list);
 		System.out.println("<<<<<<<<<< Dados originais (sistema legado) <<<<<<<<<<\n");
 		
+		//Mapeia os dados da lista original para a nova estrutura de lista duplamente encadeada
 		DLinkedList fixedList = Operation.map(list);
+		//Exibe os dados após a conversão para o novo formato
 		System.out.println(">>>>>>>>>> Dados convertidos para a nova representação dos dados >>>>>>>>>>");
 		System.out.println(fixedList);
 		System.out.println("<<<<<<<<<< Dados convertidos para a nova representação dos dados <<<<<<<<<<\n");
 		
+		//Obtem uma nova lista contendo apenas alunos com notas válidas
 		DLinkedList filteredGradedList = Operation.filterRemoveNonGraded(fixedList);
+		// Exibe a lista das notas válidas.
 		System.out.println(">>>>>>>>>> Lista filtrada (somente notas válidas) >>>>>>>>>>");
 		System.out.println(filteredGradedList);
 		System.out.println("<<<<<<<<<< Lista filtrada (somente notas válidas) <<<<<<<<<<\n");
 		
+		//Obtem uma nova lista contendo apenas alunos com ausência de nota
 		DLinkedList filteredNonGradedList = Operation.filterRemoveGraded(fixedList);
+		// Exibe a lista de ausência de notas
 		System.out.println(">>>>>>>>>> Lista filtrada (somente 'ausência de nota') >>>>>>>>>>");
 		System.out.println(filteredNonGradedList);
 		System.out.println("<<<<<<<<<< Lista filtrada (somente 'ausência de nota') <<<<<<<<<<\n");
 
+		//Calcula a média das notas validas que estão na lista filtrada
 		float average = Operation.reduce(filteredGradedList);
+		//Exibe o valor da média calculada
 		System.out.println(">>>>>>>>>> Média das notas válidas >>>>>>>>>>");
 		System.out.println(average);
 		System.out.println("<<<<<<<<<< Média das notas válidas <<<<<<<<<<\n");
 		
+		//Obtem a lista de notas válidas para ver os alunos com desempenho acima da média
 		DLinkedList aboveAverageList = Operation.filterRemoveBelowAverage(filteredGradedList, average);
+		//Exibe a lista de alunos com notas acima da média
 		System.out.println(">>>>>>>>>> Lista com notas acima da média >>>>>>>>>>");
 		System.out.println(aboveAverageList);
 		System.out.println("<<<<<<<<<< Lista com notas acima da média <<<<<<<<<<\n");
 		
+		//Converte a lista completa de dados já com o novo formato para uma unica string no formato CSV
 		String contents = Operation.mapToString(fixedList);
+		//Exibe a string formatada em CSV
 		System.out.println(">>>>>>>>>> Lista mapeada para uma única string >>>>>>>>>>");
 		System.out.println(contents);
 		System.out.println("<<<<<<<<<< Lista mapeada para uma única string <<<<<<<<<<\n");
 		
-		
-		// TODO: Salvar o conteúdo da String contents em um arquivo chamado "dados.csv".
+		// Salvar arquivo CSV
+		try {
+			Data.saveStringToTextFile("dados.csv", contents);
+			System.out.println("Arquivo dados.csv salvo com sucesso!");
+		} catch (IOException e) { //Erro para salvar
+			System.err.println("Erro ao salvar arquivo dados.csv");
+			e.printStackTrace();
+		}
 
-		
-		Node test1 = fixedList.getNode("23.S1-999");
+		// Testes adicionais
+		apl2.Node test1 = fixedList.getNode("23.S1-999");
 		System.out.println(">>>>>>>>>> test1 >>>>>>>>>>\n" + test1 + "\n<<<<<<<<<< test1 <<<<<<<<<<\n");
-
-		Node test2 = fixedList.removeNode("23.S1-999");
-		System.out.println(">>>>>>>>>> test2 >>>>>>>>>>\n" + test2 + "\n<<<<<<<<<< test2 <<<<<<<<<<\n");
-
-		Node test3 = fixedList.getNode("23.S1-999");
-		System.out.println(">>>>>>>>>> test3 >>>>>>>>>>\n" + test3 + "\n<<<<<<<<<< test3 <<<<<<<<<<\n");
-
-		aboveAverageList.clear();
-		System.out.println(">>>>>>>>>> aboveAverageList.clear() >>>>>>>>>>\n" + aboveAverageList + "\n<<<<<<<<<< aboveAverageList.clear() <<<<<<<<<<\n");
-
-		DLinkedList testList = new DLinkedList();
-		// TODO: Inserir um nó no início da lista testList com os dados ("ABC", "John Doe", 4.7f).
-		// TODO: Inserir um nó no final da lista testList com os dados ("XYZ", "Jane Doe", 9.9f).
-		// TODO: Inserir um nó no início da lista testList com os dados ("321", "Test", 2.3f).
-		// TODO: Inserir um nó no final da lista testList com os dados ("Nothing", "Yada yada yada", 99.9f).
-		System.out.println(">>>>>>>>>> testList >>>>>>>>>>\n" + testList  + "\n<<<<<<<<<< testList <<<<<<<<<<\n");
-		System.out.println("testList.getHead(): " + testList.getHead());
-		System.out.println("testList.getTail(): " + testList.getTail());
-		System.out.println("testList.removeHead(): " + testList.removeHead());
-		System.out.println("testList.removeTail(): " + testList.removeTail() + '\n');
-		System.out.println(">>>>>>>>>> testList >>>>>>>>>>\n" + testList  + "\n<<<<<<<<<< testList <<<<<<<<<<\n");
-		System.out.println("testList.getHead(): " + testList.getHead());
-		System.out.println("testList.getTail(): " + testList.getTail());
-		System.out.println("testList.removeNode(\"ABC\"): " + testList.removeNode("ABC") + '\n');
-		System.out.println(">>>>>>>>>> testList >>>>>>>>>>\n" + testList  + "\n<<<<<<<<<< testList <<<<<<<<<<\n");
-		System.out.println("testList.getHead(): " + testList.getHead());
-		System.out.println("testList.getTail(): " + testList.getTail() + '\n');
-		// TODO: Inserir um nó no início da lista testList com os dados ("qwerty", "QWERTY", 1.2f).
-		// TODO: Inserir um nó no final da lista testList com os dados ("WASD", "wasd", 3.4f).
-		// TODO: Inserir um nó no início da lista testList com os dados ("ijkl", "IJKL", 5.6f).
-		// TODO: Inserir um nó no final da lista testList com os dados ("1234", "Um Dois Tres Quatro", 7.8f).
-		System.out.println(">>>>>>>>>> testList >>>>>>>>>>\n" + testList  + "\n<<<<<<<<<< testList <<<<<<<<<<\n");
-		testList.clear();
-		System.out.println(">>>>>>>>>> testList.clear() >>>>>>>>>>\n" + testList  + "\n<<<<<<<<<< testList.clear() <<<<<<<<<<\n");
+     	}
 	}
-
-}

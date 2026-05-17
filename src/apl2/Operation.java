@@ -1,99 +1,116 @@
-//*************************** ATENÇÃO! *****************************
-// As assinaturas dos métodos desta classe não devem ser alteradas!
-//*************************** ATENÇÃO! *****************************
-// arquivo: src/apl2/Operation.java
-
-// TODO: Colocar a identificação dos(as) integrantes aqui.
-
 package apl2;
-
+//Classe que contém as operações principais de transformação e filtragem de dados
 public class Operation {
-
-	/**
-	 * <p>Recebe como parâmetro uma lista encadeada do tipo {@code LinkedListOriginal}, sendo que os nós da lista estão
-	 * populados com o conteúdo da base de dados original (conteúdo do arquivo dados.txt).</p>
-	 * <p>A operação {@code map()} deve mapear os dados originais para uma lista encadeada do tipo {@code DLinkedList} e
-	 * retornar a referência da {@code DLinkedList} que possui os dados mapeados para a nova estrutura usada pelo sistema de notas.</p>
-	 * 
-	 * @param original Base de dados original carregada em uma {@code LinkedListOriginal}.
-	 * @return Uma nova {@code DLinkedList} que contém o mapeamento da coleção de dados {@code original} para a nova estrutura usada pelo sistema de notas. 
-	 */
-	public static DLinkedList map(final LinkedListOriginal original) {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+	//Converte a lista antiga para a nova estrutura de dados
+	public static DLinkedList map(LinkedListOriginal list) {
+		DLinkedList newList = new DLinkedList();
+		NodeOriginal current = list.getHead();
+		
+		//Percorre cada item da lista antiga
+		while (current != null) {
+			//Formata o ID para o novo padrão
+			String oldId = String.format("%03d", current.getId());
+			String newId = "23.S1-" + oldId;
+			float nota;
+			
+			//Checa se a nota está ausente no formato antigo
+			if (current.getInteiro() == -1 || current.getDecimo() == -1) {
+				nota = 99.9f;
+			} else {
+				//Junta a parte inteira e decimal para formar a nota completa
+				nota = Float.parseFloat(current.getInteiro() + "." + current.getDecimo());
+			}
+			//Adiciona o aluno com os dados no novo formato para a nova lista
+			newList.append(newId, current.getNome(), nota);
+			current = current.getNext();
+		}
+		return newList; //Retorna a lista já convertida
 	}
 
-	/**
-	 * <p>Recebe como parâmetro uma lista duplamente encadeada do tipo {@code DLinkedList}, sendo que os nós da lista estão
-	 * populados com o resultado da operação {@code map()}.</p>
-	 * <p>A operação {@code filterRemoveNonGraded()} deve filtrar os nós que não possuem notas válidas (caso de "ausência de nota")
-	 * e retornar uma nova lista do tipo {@code DLinkedList} contendo apenas os nós com notas válidas.</p>
-	 * 
-	 * @param data Base de dados mapeada para o formato {@code DLinkedList} (via operação {@code map()}).
-	 * @return Uma nova {@code DLinkedList} que contém a coleção de dados ({@code data}) filtrada com nós que possuem apenas pessoas com notas válidas.
-	 */
-	public static DLinkedList filterRemoveNonGraded(final DLinkedList data) {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+	//Obtem a lista mantendo só os alunos com notas válidas
+	public static DLinkedList filterRemoveNonGraded(DLinkedList list) {
+		DLinkedList filteredList = new DLinkedList();
+		Node current = list.getHead();
+		
+		//Itera por todos os alunos
+		while (current != null) {
+			//Se a nota não for 99.9f (ou seja, uma nota real), adiciona à nova lista
+			if (current.getNota() != 99.9f) { 
+				filteredList.append(current.getId(), current.getNome(), current.getNota());
+			}
+			current = current.getNext();
+		}
+		return filteredList; //Retorna a lista só com notas válidas
 	}
 
-	/**
-	 * <p>Recebe como parâmetro uma lista duplamente encadeada do tipo {@code DLinkedList}, sendo que os nós da lista estão
-	 * populados com o resultado da operação {@code map()}.</p>
-	 * <p>A operação {@code filterRemoveGraded()} deve filtrar os nós que possuem notas válidas e retornar uma nova lista do
-	 * tipo {@code DLinkedList} contendo apenas os nós com notas inválidas (caso de "ausência de nota").</p>
-	 * 
-	 * @param data Base de dados mapeada para o formato {@code DLinkedList} (via operação {@code map()}).
-	 * @return Uma nova {@code DLinkedList} que contém a coleção de dados ({@code data}) filtrada com nós que possuem apenas pessoas com notas inválidas.
-	 */
-	public static DLinkedList filterRemoveGraded(final DLinkedList data) {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+	//Obtem a lista, mantendo apenas os alunos que não têm nota
+	public static DLinkedList filterRemoveGraded(DLinkedList list) {
+		DLinkedList filteredList = new DLinkedList();
+		Node current = list.getHead();
+		
+		//Itera por todos os alunos
+		while (current != null) {
+			//Se a nota for 99.9f (ausência de nota), adiciona à nova lista
+			if (current.getNota() == 99.9f) { 
+				filteredList.append(current.getId(), current.getNome(), current.getNota());
+			}
+			current = current.getNext();
+		}
+		return filteredList; //Retorna a lista só com alunos sem nota
 	}
 
-	/**
-	 * <p>Recebe como parâmetro uma lista duplamente encadeada do tipo {@code DLinkedList}, sendo que os nós da lista estão
-	 * populados com o resultado da operação {@code filterRemoveNonGraded()}, e a média de notas válidas, calculadas com a
-	 * operação {@code reduce()}.</p>
-	 * <p>A operação {@code filterRemoveBelowAverage()} deve filtrar os nós que possuem notas abaixo da média e retornar uma
-	 * nova lista do tipo {@code DLinkedList} contendo apenas os nós com notas acima da média.
-	 * 
-	 * @param data Base de dados filtrada com a operação {@code filterRemoveNonGraded()}.
-	 * @param average Média de notas válidas calculada com a operação {@code reduce()}.
-	 * @return Uma nova {@code DLinkedList} que contém a coleção de dados ({@code data}) filtrada somente com pessoas com notas maiores do que {@code average}.
-	 */
-	public static DLinkedList filterRemoveBelowAverage(final DLinkedList data, float average) {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
-	}
-	
-	/**
-	 * <p>Recebe como parâmetro uma lista duplamente encadeada do tipo {@code DLinkedList}, sendo que os nós da lista estão
-	 * populados com o resultado da operação {@code filterRemoveNonGraded()}.</p>
-	 * <p>A operação {@code reduce()} deve calcular a média das notas contidas na coleção de dados passada como parâmetro e
-	 * retornar a média calculada.
-	 * 
-	 * @param data Base de dados filtrada com a operação {@code filterRemoveNonGraded()}.
-	 * @return Média das notas ({@code float}) contidas na coleção de dados ({@code data}).
-	 */
-	public static float reduce(final DLinkedList data) {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+	//Obtem a lista para encontrar alunos com nota acima da média
+	public static DLinkedList filterRemoveBelowAverage(DLinkedList list, float average) {
+		DLinkedList filteredList = new DLinkedList();
+		Node current = list.getHead();
+		//Itera por todos os alunos.
+		while (current != null) {
+			//Se a nota for maior que a média ele adiciona à nova lista
+			if (current.getNota() > average) {
+				filteredList.append(current.getId(), current.getNome(), current.getNota());
+			}
+			current = current.getNext();
+		}
+		return filteredList; //Retorna a lista de alunos acima da média
 	}
 
-	/**
-	 * <p>Recebe como parâmetro uma lista duplamente encadeada do tipo {@code DLinkedList}, sendo que os nós da lista estão
-	 * populados com o resultado da operação {@code map()}.</p>
-	 * <p>A operação {@code mapToString()} deve mapear todos os nós da coleção de dados passada como parâmetro para uma única
-	 * {@code String}, sendo que cada dado de uma pessoa é separado por ponto-e-vírgula (;) e cada pessoa é separada por uma
-	 * quebra de linha.</p>
-	 * 
-	 * @param data Base de dados mapeada para o formato {@code DLinkedList} (via operação {@code map()}).
-	 * @return {@code String} com a coleção de dados separada por ponto-e-vírgula (dados de cada pessoa) e quebras de linha (cada pessoa).
-	 */
-	public static String mapToString(final DLinkedList data) {
-		// TODO: Implementar o método e remover o lançamento de exceção abaixo.
-		throw new UnsupportedOperationException("Método ainda não implementado.");
+	//Calcula a media de todas as notas validas na lista
+	public static float reduce(DLinkedList list) {
+		float sum = 0;
+		int count = 0;
+		Node current = list.getHead();
+		
+		//Soma as notas e conta quantos alunos tem nota
+		while (current != null) {
+			if (current.getNota() != 99.9f) {
+				sum += current.getNota();
+				count++;
+			}
+			current = current.getNext();
+		}
+		return count > 0 ? sum / count : 0; //Retorna a média, se não houver notas retorna 0 para evitar divisão por zero
 	}
 
+	//Converte o conteudo da lista para uma string no formato CSV (ID;Nome;Nota)
+	public static String mapToString(DLinkedList list) {
+		StringBuilder sb = new StringBuilder();
+		Node current = list.getHead();
+		
+		//Itera por todos os alunos para montar a string
+		while (current != null) {
+			//Adiciona os dados do aluno separados por ponto e vírgula
+			sb.append(current.getId())
+			  .append(";")
+			  .append(current.getNome())
+			  .append(";")
+			  .append(current.getNota());
+			
+			//Coloca uma quebra de linha para o próximo aluno se tiver
+			if (current.getNext() != null) {
+				sb.append("\n");
+			}
+			current = current.getNext();
+		}
+		return sb.toString(); //Retorna a string CSV final
+	}
 }
