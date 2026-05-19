@@ -110,5 +110,5 @@ public class MainApl2 {
 	https://www.geeksforgeeks.org/javascript/how-to-use-map-filter-and-reduce-in-javascript/
 	https://www.baeldung.com/java-streams
 	https://www.w3schools.com/java/ref_string_format.asp
-	
+	https://pt.stackoverflow.com
 	*/
