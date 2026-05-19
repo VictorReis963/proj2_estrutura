@@ -1,3 +1,7 @@
+/*Victor Reis 10420297
+ Renan jesus 10748027
+  Caroline Rhe Ree Lee 10264791
+ */
 package apl2;
 // Esta classe implementa uma lista duplamente encadeada
 // Ela armazena os nós que representam os dados dos alunos no novo formato

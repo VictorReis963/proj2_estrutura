@@ -1,3 +1,7 @@
+/* Victor Reis 10420297
+ Renan jesus 10748027 
+ Caroline Rhe Ree Lee 10264791
+ */
 package apl2;
 //Classe que contém as operações principais de transformação e filtragem de dados
 public class Operation {

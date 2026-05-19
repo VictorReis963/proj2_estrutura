@@ -1,3 +1,7 @@
+/* Victor Reis 10420297 
+Renan jesus 10748027
+ Caroline Rhe Ree Lee 10264791
+ */
 package apl2;
 //Representa um nó individual na nova lista duplamente encadeada
 //Tem os dados de um aluno e referências para o nó anterior e próximo

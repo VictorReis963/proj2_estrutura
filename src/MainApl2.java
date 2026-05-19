@@ -1,3 +1,7 @@
+/* Victor Reis 10420297 
+Renan jesus 10748027 
+Caroline Rhe Ree Lee 10264791
+*/
 import apl2.Data;
 import apl2.DLinkedList;
 import apl2.LinkedListOriginal;
@@ -95,3 +99,16 @@ public class MainApl2 {
 		System.out.println(">>>>>>>>>> test1 >>>>>>>>>>\n" + test1 + "\n<<<<<<<<<< test1 <<<<<<<<<<\n");
      	}
 	}
+
+	/*bibliografia: 
+	*ultimo acesso 19/05/2026.
+
+	https://www.geeksforgeeks.org/dsa/doubly-linked-list/
+	https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html
+	https://www.devmedia.com.br/a-classe-stringbuilder-em-java/25609
+	https://pt.stackoverflow.com/questions/22913/qual-a-finalidade-da-override
+	https://www.geeksforgeeks.org/javascript/how-to-use-map-filter-and-reduce-in-javascript/
+	https://www.baeldung.com/java-streams
+	https://www.w3schools.com/java/ref_string_format.asp
+	
+	*/
